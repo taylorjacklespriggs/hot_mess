@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			window.addEventListener("load", init, false);
+						
+			function init(){
+				var myCanvas 	= document.getElementById("drawArea");
+				ctx 	 	= myCanvas.getContext("2d");
+				var disWidth 	= myCanvas.width;
+				var disHeight   = myCanvas.height;
+				var lineWidth	= 1;
+				var numIts		= 800;
+				
+				function add() {
+    				var element = document.createElement("input");
+    				element.setAttribute("type", "button");
+    				element.setAttribute("value", "zoom");
+    				element.setAttribute("name", "zoom");
+   				 	element.setAttribute("onclick", "zoomIn()");
+    				document.body.appendChild(element);
+				}
+
+				
+				var p1 = Math.floor((Math.random() * 400));
+				var p2 = Math.floor((Math.random() * 400));
+				
+				beginFractal();
+				
+				function beginFractal(){
+					drawSquare(0,0,numIts);
+				}
+				function drawSquare(x,y,width){
+					ctx.beginPath();
+					ctx.moveTo(x,y);
+					ctx.arc(x,y,width,0,2*Math.PI);
+					//ctx.fillStyle = getRandomColor();
+					ctx.strokeStyle = getRandomColor();						
+					ctx.stroke();
+					if(width > 7) {
+						drawSquare(x + width/2,y,width/2);
+						drawSquare(x - width/2,y,width/2);
+						drawSquare(x,y + width/2,width/2);
+						drawSquare(x,y - width/2,width/2);
+					}
+				}
+				
+				function drawLine(x,y,len){
+					if(len >=1){
+						ctx.beginPath();
+						ctx.moveTo(x,y);
+						ctx.lineTo(x+len,y);
+						ctx.stroke();
+						y+=10;
+						drawLine(x,y,len/3);
+						drawLine(x + len*2/3,y,len/3);
+					}
+				}
+				
+				function getRandomColor() {
+    				var letters = '0123456789ABCDEF'.split('');
+    				var color = '#';
+    				for (var i = 0; i < 6; i++ ) {
+        				color += letters[Math.floor(Math.random() * 16)];
+    				}
+    				return color;
+				}
+				function zoomIn(){
+					ctz.scale(2,2);
+				}
+			}
+		</script>
+	</head>
+	<title>
+		Fractal with Javascript
+	</title>
+	<body id = "myBod">
+		<center>
+			<canvas id="drawArea" width="800px" height="800px">
+				Your browser does not support this awesome feature of canvas'
+			</canvas>
+		</center>
+	</body>
+</html>
